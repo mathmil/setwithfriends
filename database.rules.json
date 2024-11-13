@@ -13,7 +13,7 @@
         },
         "users": {
           "$userId": {
-            ".write": "auth != null && auth.uid == $userId && data.parent().parent().child('status').val() == 'waiting'",
+            ".write": "auth != null && auth.uid == $userId && data.parent().parent().child('status').val() == 'waiting' && root.child('users').child(auth.uid).child('banned').val() < now",
             ".validate": "!newData.exists() || (newData.isNumber() && newData.val() == now)"
           }
         },
@@ -132,7 +132,7 @@
       ".read": "auth != null",
       ".indexOn": ["time", "user"],
       "$messageId": {
-        ".write": "auth != null && ((!data.exists() && newData.exists()) || (data.exists() && root.child('users').child(auth.uid).child('admin').val() == true))",
+        ".write": "auth != null && ((!data.exists() && newData.exists()) || (data.exists() && root.child('users').child(auth.uid).child('admin').val() == true)) && root.child('users').child(auth.uid).child('banned').val() < now",
         ".validate": "newData.hasChildren(['user', 'message', 'time'])",
         "user": {
           ".validate": "newData.isString() && newData.val() == auth.uid"
