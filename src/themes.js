@@ -1,9 +1,6 @@
 import { blueGrey, grey, indigo, red } from "@material-ui/core/colors";
 import { createTheme } from "@material-ui/core/styles";
 
-import flowersDarkImage from "./assets/flowers-dark.jpg";
-import flowersLightImage from "./assets/flowers-light.jpg";
-
 export const darkTheme = createTheme({
   palette: {
     type: "dark",
@@ -65,15 +62,6 @@ export const darkTheme = createTheme({
     row: "#282828",
   },
   setFoundEntry: "rgba(130, 170, 100, 0.15)",
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        body: {
-          backgroundImage: `url("${flowersDarkImage}")`,
-        },
-      },
-    },
-  },
 });
 
 export const lightTheme = createTheme({
@@ -124,15 +112,6 @@ export const lightTheme = createTheme({
     row: "#fff",
   },
   setFoundEntry: "rgba(130, 170, 100, 0.15)",
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        body: {
-          backgroundImage: `url("${flowersLightImage}")`,
-        },
-      },
-    },
-  },
 });
 
 export function withCardColors(theme, colors) {
