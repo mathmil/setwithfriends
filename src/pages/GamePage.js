@@ -194,6 +194,7 @@ function GamePage({ match }) {
   const {
     current,
     scores,
+    nInvalids,
     lastEvents,
     history,
     board,
@@ -498,6 +499,7 @@ function GamePage({ match }) {
                 <GameSidebar
                   game={game}
                   scores={scores}
+                  nInvalids={nInvalids}
                   leaderboard={leaderboard}
                   pause={gameData.pause}
                   endedAt={

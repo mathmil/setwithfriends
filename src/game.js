@@ -332,8 +332,9 @@ function removeCards(internalGameState, cards) {
 }
 
 function processValidEvent(internalGameState, event, cards) {
-  const { scores, lastEvents, history } = internalGameState;
+  const { nInvalids, scores, lastEvents, history } = internalGameState;
   scores[event.user] = (scores[event.user] || 0) + 1;
+  nInvalids[event.user] = (nInvalids[event.user] || 1) - 1;
   lastEvents[event.user] = event.time;
   history.push(event);
 }
@@ -371,7 +372,10 @@ function updateBoard(internalGameState, event, cards) {
 }
 
 function processEvent(internalGameState, event) {
-  const { used, chain, puzzle, findState } = internalGameState;
+  const { nInvalids, used, chain, puzzle, findState } = internalGameState;
+  // increase number of nInvalids. If the event was valid, it gets decreased
+  // again This could be cleaner if there weren't any early returns here
+  nInvalids[event.user] = (nInvalids[event.user] || 0) + 1
   const allCards = cardsFromEvent(event);
   let cards;
   if (chain && findState.lastSet.length > 0) {
@@ -398,6 +402,10 @@ export function computeState(gameData, gameMode) {
     throw new Error(`invalid gameMode: ${gameMode}`);
   }
   const scores = {}; // scores of all users
+  // No of invalid Events of all users. Under normal conditions these should
+  // correspond to correct SETs that the user found first client-side but not
+  // server-side
+  const nInvalids = {};
   const used = {}; // set of cards that have been taken
   const history = []; // list of valid events in time order
   const random =
@@ -419,6 +427,7 @@ export function computeState(gameData, gameMode) {
     used,
     current,
     scores,
+    nInvalids,
     history,
     lastEvents,
     gameMode,
@@ -444,6 +453,7 @@ export function computeState(gameData, gameMode) {
   return {
     current,
     scores,
+    nInvalids,
     history,
     lastEvents,
     boardSize: internalGameState.boardSize,

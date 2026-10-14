@@ -59,7 +59,7 @@ function GameTime({ startedAt, endedAt, pause }) {
   return <>{formatTime(gameTime - startedAt - pauseTime, !endedAt)}</>;
 }
 
-function GameSidebar({ game, scores, leaderboard, pause, endedAt }) {
+function GameSidebar({ game, nInvalids, scores, leaderboard, pause, endedAt }) {
   const classes = useStyles();
   const { pathname } = useLocation();
 
@@ -126,11 +126,11 @@ function GameSidebar({ game, scores, leaderboard, pause, endedAt }) {
                   <ListItemText disableTypography>{userEl}</ListItemText>
                   <ListItemText
                     style={{
-                      flex: "0 0 36px",
+                      flex: "0 0 72px",
                       textAlign: "right",
                     }}
                   >
-                    <strong>{scores[uid] || 0}</strong>
+                    <strong>{scores[uid] || 0}</strong> (+{nInvalids[uid] || 0})
                   </ListItemText>
                 </ListItem>
               )}
